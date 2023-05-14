@@ -13,6 +13,11 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
 </head>
 <body>
+    <br>
+    <br>
+    <br>
+    <br>
+    
     <div class="container">
         <?php
             echo '<h1>Bienvenido, '.$_SESSION['username'] .' </h1>
@@ -20,7 +25,7 @@
             <p>Derrotas: '.$_SESSION['loses'] .'</p>'
         ?>
         <br>
-        <button class="button-27" onclick="playGame()">PLAY!</button>
+        <button class="button-27" onclick="window.location.href = 'game.php'">PLAY!</button>
         <br>
         <br>
         <a href="processes/logout.php">

@@ -4,6 +4,13 @@
 
     $username = ($_POST['username']);
     $password = ($_POST['password']);
+    $confirm_password = ($_POST['confirm_password']);
+
+    if(!($password === $confirm_password)){
+        $error = "(!) Las contraseñas no coinciden";
+        echo "<script>signup_error('" . $error . "');</script>";
+        exit();
+    }
 
     $query = "SELECT * FROM yahtzee.usuarios WHERE USUARIO = '$username'";
 

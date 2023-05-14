@@ -1,5 +1,8 @@
 body {
-    background-color: #000;
+    background-color: #000000;
+    opacity: 1;
+    background: radial-gradient(circle, transparent 20%, #000000 20%, #000000 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #000000 20%, #000000 80%, transparent 80%, transparent) 100px 100px, linear-gradient(#f69300 8px, transparent 8px) 0 -4px, linear-gradient(90deg, #f69300 8px, #000000 8px) -4px 0;
+    background-size: 200px 200px, 200px 200px, 100px 100px, 100px 100px;
     color: #fff;
     font-family: Arial, sans-serif;
 }
@@ -63,6 +66,10 @@ input[type="password"] {
 
 .error {
     border: 1px solid red;
+}
+
+.center{
+    text-align: center;
 }
 
 /* CSS */
@@ -153,3 +160,19 @@ input[type="password"] {
     box-shadow: none;
     transform: translateY(0);
 }
+
+.dice-row, .lock-row {
+    position: relative;
+    display: inline-block;
+}
+
+.lock-row img{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.image-link {
+    text-decoration: none;
+    color: inherit;
+}
+  

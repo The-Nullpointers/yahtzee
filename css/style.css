@@ -7,8 +7,8 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.container {
-    max-width: 400px;
+.container{
+    max-width: 550px;
     margin: 0 auto;
     padding: 40px;
     background-color: #333;
@@ -175,4 +175,17 @@ input[type="password"] {
     text-decoration: none;
     color: inherit;
 }
-  
+
+.segundo-login{
+    margin-top: 10px;
+}
+
+.info-jugadores{
+    margin-top: 10px;
+}
+
+button:disabled {
+    background-color: gray; /* Cambia el color de fondo a gris cuando el botón está bloqueado */
+    color: white; /* Cambia el color del texto a blanco cuando el botón está bloqueado */
+    cursor: not-allowed; /* Cambia el cursor a "no permitido" cuando el botón está bloqueado */
+  }

@@ -9,8 +9,13 @@
 <html>
 <head>
     <title>TNP - Yhatze!</title>
-    <link rel="stylesheet" href="../css/style.css">
+    
     <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>>
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+
 </head>
 <body>
   <div class="container">
@@ -54,6 +59,8 @@
         <br>
         <br>
         <button class="button" id="botonDados" onclick="throwDice(this)">Lanzar los Dados</button>
+        <button class="button-winner" id="btnWinner" value="winner" name="winname" onclick="showWinner()" style="display: none;">Ver Ganador</button>
+
       </center>
     </div>
 
@@ -75,92 +82,92 @@
         <td>Ones</td>
         <td id="puntosOnes1">...</td>
         <td id="puntosOnes2">...</td>
-        <td> <button class="button" id="botonOnes01" onclick="desactivarBoton(this, 1)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonOnes02" onclick="desactivarBoton(this, 2)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonOnes01" onclick="desactivarBoton(this, 1)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonOnes02" onclick="desactivarBoton(this, 2)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Twos</td>
         <td id="puntosTwos1">...</td>
         <td id="puntosTwos2">...</td>
-        <td> <button class="button" id="botonTwos01" onclick="desactivarBoton(this, 3)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonTwos02"onclick="desactivarBoton(this, 4)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonTwos01" onclick="desactivarBoton(this, 3)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonTwos02" onclick="desactivarBoton(this, 4)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Threes</td>
         <td id="puntosThrees1">...</td>
         <td id="puntosThrees2">...</td>
-        <td> <button class="button" id="botonThrees01" onclick="desactivarBoton(this, 5)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonThrees02" onclick="desactivarBoton(this, 6)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonThrees01" onclick="desactivarBoton(this, 5)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonThrees02" onclick="desactivarBoton(this, 6)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Fours</td>
         <td id="puntosFours1">...</td>
         <td id="puntosFours2">...</td>
-        <td> <button class="button" id="botonFours01" onclick="desactivarBoton(this, 7)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonFours02" onclick="desactivarBoton(this, 8)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonFours01" onclick="desactivarBoton(this, 7)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonFours02" onclick="desactivarBoton(this, 8)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Fives</td>
         <td id="puntosFives1">...</td>
         <td id="puntosFives2">...</td>
-        <td> <button class="button" id="botonFives01" onclick="desactivarBoton(this, 9)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonFives02" onclick="desactivarBoton(this, 10)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonFives01" onclick="desactivarBoton(this, 9)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonFives02" onclick="desactivarBoton(this, 10)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Sixes</td>
         <td id="puntosSixes1">...</td>
         <td id="puntosSixes2">...</td>
-        <td> <button class="button" id="botonSixes01" onclick="desactivarBoton(this, 11)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonSixes02" onclick="desactivarBoton(this, 12)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonSixes01" onclick="desactivarBoton(this, 11)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonSixes02" onclick="desactivarBoton(this, 12)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Three of a Kind</td>
         <td id="puntosTOK1">...</td>
         <td id="puntosTOK2">...</td>
-        <td> <button class="button" id="botonTOK01" onclick="desactivarBoton(this, 13)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonTOK02" onclick="desactivarBoton(this, 14)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonTOK01" onclick="desactivarBoton(this, 13)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonTOK02" onclick="desactivarBoton(this, 14)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Four of a Kind</td>
         <td id="puntosFourKind1">...</td>
         <td id="puntosFourKind2">...</td>
-        <td> <button class="button" id="botonFK01" onclick="desactivarBoton(this, 15)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonFK02" onclick="desactivarBoton(this, 16)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonFK01" onclick="desactivarBoton(this, 15)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonFK02" onclick="desactivarBoton(this, 16)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Full House</td>
         <td id="puntosFull1">...</td>
         <td id="puntosFull2">...</td>
-        <td> <button class="button" id="botonFull01" onclick="desactivarBoton(this, 17)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonFull02" onclick="desactivarBoton(this, 18)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonFull01" onclick="desactivarBoton(this, 17)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonFull02" onclick="desactivarBoton(this, 18)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Small Straight</td>
         <td id="puntosSmall1">...</td>
         <td id="puntosSmall2">...</td>
-        <td> <button class="button" id="botonSmall01" onclick="desactivarBoton(this, 19)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonSmall02" onclick="desactivarBoton(this, 20)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonSmall01" onclick="desactivarBoton(this, 19)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonSmall02" onclick="desactivarBoton(this, 20)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Large Straight</td>
         <td id="puntosLarge1">...</td>
         <td id="puntosLarge2">...</td>
-        <td> <button class="button" id="botonLarge01" onclick="desactivarBoton(this, 21)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonLarge02" onclick="desactivarBoton(this, 22)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonLarge01" onclick="desactivarBoton(this, 21)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonLarge02" onclick="desactivarBoton(this, 22)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Yahtzee</td>
         <td id="puntosYahtzee1">...</td>
         <td id="puntosYahtzee2">...</td>
-        <td> <button class="button" id="botonYat01" onclick="desactivarBoton(this, 23)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonYat02" onclick="desactivarBoton(this, 24)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonYat01" onclick="desactivarBoton(this, 23)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonYat02" onclick="desactivarBoton(this, 24)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Chance</td>
         <td id="puntosChance1">...</td>
         <td id="puntosChance2">...</td>
-        <td> <button class="button" id="botonChance01" onclick="desactivarBoton(this, 25)">Seleccionar</button> </td>
-        <td> <button class="button" id="botonChance02" onclick="desactivarBoton(this, 26)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer1" id="botonChance01" onclick="desactivarBoton(this, 25)">Seleccionar</button> </td>
+        <td> <button class="button btnPlayer2" id="botonChance02" onclick="desactivarBoton(this, 26)">Seleccionar</button> </td>
       </tr>
       <tr>
         <td>Total Score</td>
@@ -176,12 +183,18 @@
         <h2 id="jug2">Login jugador 2</h2>
             <form action="game.php" method="post">
 
-                <input type="text" name="username" placeholder="Usuario" required>
+                <input type="text" name="username" id="username" placeholder="Usuario" required>
 
-                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="password"  id="password" placeholder="Contraseña" required>
 
-                <button type="submit" name="submit" class="button-27 button-changes" value="loginj2">Login</button>
+                <button type="submit" name="submit" id="loginbutton" class="button-27 button-changes" value="loginj2">Login</button>
                 <p id=login_error></p>
+
+            </form>
+            
+            <form action="game.php" method="post">
+
+              <button type="submit" name="submit" id="logoutbutton" class="button-logout button-changes" value="logout" style="display: none;">Desconectar Jugador 2</button>
 
             </form>
 
@@ -192,18 +205,33 @@
   </div>
 
   <?php
-        if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submit'])){
 
-            require_once "processes/connect.php";
-            require_once "processes/loginj2.php";
-           
-        }
+    if(isset($_POST['username']) && isset($_POST['password'])){
+
+      if($_POST['submit'] == 'loginj2'){
+        require_once "processes/connect.php";
+        require_once "processes/loginj2.php";
+      }
+      
+      
+        
+    }
+
+    if(isset($_POST['submit'])){
+      if($_POST['submit'] == 'logout'){
+        require_once "processes/logoutj2.php";
+      }
+    }
+
+    if(isset($_POST['winname'])){
+        
+      require_once "processes/connect.php";
+      require_once "processes/addvictory.php";
+    }
+        
     ?> 
-
   <script src="../js/game.js"></script>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="sweetalert2.all.min.js"></script>
 
 </html>

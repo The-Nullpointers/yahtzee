@@ -1,4 +1,4 @@
-<script src="../js/error_j2.js"></script>
+<script src="../js/game.js"></script>
 
 <?php
 
@@ -12,13 +12,21 @@
     if($user_conn->num_rows>=1){
 
         $row = $user_conn->fetch_array(MYSQLI_ASSOC);
-
-        $_SESSION['username_invitado'] = $row['USUARIO'];
         
-        echo "<script>login_success('" . $username . "');</script>";
+        if($_SESSION['username'] == $row['USUARIO']){
+            $error = "(!) El jugador ingresado ya existe como Jugador 1";
+            echo "<script>login_error('" . $error . "');</script>";
+            echo "<script>showLoginElements();</script>";
+        }
+        else{
+            $_SESSION['username_invitado'] = $row['USUARIO'];
+            echo "<script>login_success('" . $username . "');</script>";
+            echo "<script>hideLoginElements();</script>";
+        }
 
     }else{
-        echo "<script>login_error();</script>";
+        $error = "(!) Los credenciales son incorrectos";
+        echo "<script>login_error('" . $error . "');</script>";
     }
 
-    ?>
+?>

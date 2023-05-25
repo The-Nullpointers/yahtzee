@@ -10,30 +10,72 @@ var lock3 = document.getElementById("lock-3");
 var lock4 = document.getElementById("lock-4");
 var lock5 = document.getElementById("lock-5");
 
+
 /*Variables de puntajes*/
 var a=0;
 var b=0; 
 var c=0; 
 var d=0;
 var e=0;
+var firstTimeDice = false;
+var canYouLockTheDice = false;
 
 var dice1_blocked = dice2_blocked = dice3_blocked = dice4_blocked = dice5_blocked = false;
 dice_lock_array = [lock1, lock2, lock3, lock4, lock5];
 dice_array = [dice1, dice2, dice3, dice4, dice5];
 is_dice_n_locked = [dice1_blocked, dice2_blocked, dice3_blocked, dice4_blocked, dice5_blocked];
 
+
 function lockDice(dice) {
 
-    if(is_dice_n_locked[dice-1]){
-        dice_lock_array[dice-1].src = "../images/placeholder-lock.png"
-        is_dice_n_locked[dice-1] = false;
+    if(canYouLockTheDice){
+        if(is_dice_n_locked[dice-1]){
+            dice_lock_array[dice-1].src = "../images/placeholder-lock.png"
+            is_dice_n_locked[dice-1] = false;
+        }
+        else{
+            dice_lock_array[dice-1].src = "../images/lock.png"
+            is_dice_n_locked[dice-1] = true;
+        }
     }
-    else{
-        dice_lock_array[dice-1].src = "../images/lock.png"
-        is_dice_n_locked[dice-1] = true;
-    }
+    
 }
 
+function hideLoginElements(){
+    var username = document.getElementById("username");
+    var password = document.getElementById("password");
+    var btn1 = document.getElementById("loginbutton");
+    var btn2 = document.getElementById("logoutbutton");
+
+    username.style.display = "none";
+    password.style.display = "none";
+    btn1.style.display = "none";
+    btn2.style.display = "block";
+}
+
+function showLoginElements(){
+    var username = document.getElementById("username");
+    var password = document.getElementById("password");
+    var btn1 = document.getElementById("loginbutton");
+    var btn2 = document.getElementById("logoutbutton");
+
+    username.style.display = "block";
+    password.style.display = "block";
+    btn1.style.display = "block";
+    btn2.style.display = "none";
+}
+
+function hotfixFunction(){
+    var username = document.getElementById("username");
+    var password = document.getElementById("password");
+    var btn1 = document.getElementById("loginbutton");
+    var btn2 = document.getElementById("logoutbutton");
+
+    username.style.display = "none";
+    password.style.display = "none";
+    btn1.style.display = "none";
+    btn2.style.display = "none";
+}
 
 //variables
 var contadorturnos=1; 
@@ -42,9 +84,13 @@ var contadorlanzamiento=0;
 var total1=0;
 var total2=0;
 
+var player1Won = false;
+var player2Won = false;
+
 function throwDice(boton){
 
     var n = 0;
+    firstTimeDice = true;
     for(var i = 0; i < 5; i++){
 
         n = Math.floor(Math.random() * 6) + 1;
@@ -76,59 +122,158 @@ function throwDice(boton){
     obtenerTotal();
 
     contadorlanzamiento+=1;
+    canYouLockTheDice = true;
     if(contadorlanzamiento==3){
         desactivarBotonDados();
-    }
-    if(contadorturnos==27){
-        if(total1>total2){
-            //Jugador 1 ganador
-            Swal.fire({
-                title: 'Fin del juego',
-                text: 'El jugador 1 es el ganador',
-                icon: 'success',
-                confirmButtonText: 'OK',
-            });
-        }
-        if(total2>total1){
-            //jugador 2 ganador
-            Swal.fire({
-                title: 'Fin del juego',
-                text: 'El jugador 2 es el ganador',
-                icon: 'success',
-                confirmButtonText: 'OK',
-            });
-        }
-        if(total1==total2){
-            //empate
-            Swal.fire({
-                title: 'Fin del juego',
-                text: 'Es un empate',
-                icon: 'warning',
-                confirmButtonText: 'OK',
-            });
-        }
-            /*// Realizar una solicitud AJAX a tu script PHP para comparar los números e insertar el resultado en la base de datos
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                // Aquí puedes realizar alguna acción adicional después de guardar el resultado en la base de datos
-                console.log('Resultado guardado en la base de datos');
-              }
-            };
-            xhttp.open("POST", "addvictory.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("total1=" + total1 + "&total2=" + total2);*/
+        canYouLockTheDice = false;
     }
 
     if(contadorturnos % 2 == 0){
         document.getElementById("jugador").innerHTML = "Jugador 2";
+        changeButtonsByTurns();
+        
         
     }else{
         document.getElementById("jugador").innerHTML = "Jugador 1";
         turno=0;
-        turno=(contadorturnos/2)+0.5;
+        changeButtonsByTurns();
+        if(contadorturnos % 2 == 0){
+            turno=(contadorturnos/2)
+        } else {
+            turno = (contadorturnos+1)/2;
+        }
         document.getElementById("turno").innerHTML = turno;
     }
+
+}
+
+function selectionDone(){
+
+    unlockAllDices();
+    canYouLockTheDice = false;
+
+    elements = document.querySelectorAll('.btnPlayer1');
+  
+    elements.forEach(function(element) {
+        element.classList.add('btn-disabled');
+        elements.disabled=true;
+    });
+
+    elements = document.querySelectorAll('.btnPlayer2');
+  
+    elements.forEach(function(element) {
+        element.classList.add('btn-disabled');
+        elements.disabled=true;
+    });
+
+    if(contadorturnos%2 != 0){
+        if(!puntajeOnes2){
+            var puntosOnes = document.getElementById("puntosOnes2");
+            puntosOnes.textContent = "...";
+        }
+        if(!puntajeTwos2){
+            var puntosTwos = document.getElementById("puntosTwos2");
+            puntosTwos.textContent = "...";            
+        }
+        if(!puntajeThrees2){
+            var puntosThrees = document.getElementById("puntosThrees2");
+            puntosThrees.textContent = "...";
+        }
+        if(!puntajeFours2){
+            var puntosFours = document.getElementById("puntosFours2");
+            puntosFours.textContent = "..."; 
+        }
+        if(!puntajeFives2){
+            var puntosFives = document.getElementById("puntosFives2");
+            puntosFives.textContent = "...";   
+        }
+        if(!puntajeSixes2){
+            var puntosSixes = document.getElementById("puntosSixes2");
+            puntosSixes.textContent = "...";   
+        }
+        if(!puntajeTOK2){
+            var puntosTOK = document.getElementById("puntosTOK2");
+            puntosTOK.textContent = "...";   
+        }
+        if(!puntajeFK2){
+            var puntosFourKind = document.getElementById("puntosFourKind2");
+            puntosFourKind.textContent = "...";   
+        }
+        if(!puntajeFull2){
+            var puntosFull = document.getElementById("puntosFull2");
+            puntosFull.textContent = "...";   
+        }
+        if(!puntajeSmall2){
+            var puntosSmall = document.getElementById("puntosSmall2");
+            puntosSmall.textContent = "...";   
+        }
+        if(!puntajeLarge2){
+            var puntosLarge = document.getElementById("puntosLarge2");
+            puntosLarge.textContent = "...";  
+        }
+        if(!puntajeYat2){
+            var puntosYahtzee = document.getElementById("puntosYahtzee2");
+            puntosYahtzee.textContent = "...";   
+        }
+        if(!puntajeChance2){
+            var puntosChance = document.getElementById("puntosChance2");
+            puntosChance.textContent = "...";
+        }
+    }
+    else{
+        if(!puntajeOnes1){ //si no ha sido seleccionado
+            var puntosOnes = document.getElementById("puntosOnes1");
+            puntosOnes.textContent = "...";   
+        }
+        if(!puntajeTwos1){
+            var puntosTwos = document.getElementById("puntosTwos1");
+            puntosTwos.textContent = "...";  
+        }
+        if(!puntajeThrees1){
+            var puntosThrees = document.getElementById("puntosThrees1");
+            puntosThrees.textContent = "...";    
+        }
+        if(!puntajeFours1){
+            var puntosFours = document.getElementById("puntosFours1");
+            puntosFours.textContent = "...";
+        }
+        if(!puntajeFives1){
+            var puntosFives = document.getElementById("puntosFives1");
+            puntosFives.textContent = "...";   
+        }
+        if(!puntajeSixes1){
+            var puntosSixes = document.getElementById("puntosSixes1");
+            puntosSixes.textContent = "..."; 
+        }
+        if(!puntajeTOK1){
+            var puntosTOK = document.getElementById("puntosTOK1");
+            puntosTOK.textContent = "..."; 
+        }
+        if(!puntajeFK1){
+            var puntosFourKind = document.getElementById("puntosFourKind1");
+            puntosFourKind.textContent = "...";
+        }
+        if(!puntajeFull1){
+            var puntosFull = document.getElementById("puntosFull1");
+            puntosFull.textContent = "..."; 
+        }
+        if(!puntajeSmall1){
+           var puntosSmall = document.getElementById("puntosSmall1");
+            puntosSmall.textContent = "...";
+        }
+        if(!puntajeLarge1){
+            var puntosLarge = document.getElementById("puntosLarge1");
+            puntosLarge.textContent = "..."; 
+        }
+        if(!puntajeYat1){
+            var puntosYahtzee = document.getElementById("puntosYahtzee1");
+            puntosYahtzee.textContent = "...";
+        }
+        if(!puntajeChance1){
+           var puntosChance = document.getElementById("puntosChance1");
+            puntosChance.textContent = "...";
+        }
+    }  
 
 }
 
@@ -136,13 +281,21 @@ function throwDice(boton){
 function desactivarBotonDados() {
     var boton = document.getElementById("botonDados");
     boton.disabled = true;
-    boton.classList.add('disabled');
+    boton.classList.add('btn-disabled');
 }
 
 function activarBotonDados(){
     var boton = document.getElementById("botonDados");
     boton.disabled = false;
-    boton.classList.remove('disabled');
+    boton.classList.remove('btn-disabled');
+}
+
+function unlockAllDices(){
+    for (var i = 0; i < dice_lock_array.length; i++) {
+
+        dice_lock_array[i].src = "../images/placeholder-lock.png"
+        is_dice_n_locked[i] = false;
+    }
 }
 
 
@@ -520,11 +673,168 @@ function full(array){
     return puntos;
 }
 
+function changeButtonsByTurns(){
+
+    var btn
+
+    if(contadorturnos % 2 != 0){ //Que el turno es del jugador 1
+
+        elements = document.querySelectorAll('.btnPlayer2'); //Guarda todos los botones del jugador 2
+  
+        elements.forEach(function(element) {
+          element.classList.add('btn-disabled'); //Y los apaga
+          elements.disabled=true;
+        });
+
+        if(!puntajeOnes1){
+            btn = document.getElementById('botonOnes01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeTwos1){
+            btn = document.getElementById('botonTwos01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeThrees1){
+            btn = document.getElementById('botonThrees01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFours1){
+            btn = document.getElementById('botonFours01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFives1){
+            btn = document.getElementById('botonFives01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeSixes1){
+            btn = document.getElementById('botonSixes01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeTOK1){
+            btn = document.getElementById('botonTOK01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFK1){
+            btn = document.getElementById('botonFK01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFull1){
+            btn = document.getElementById('botonFull01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeSmall1){
+            btn = document.getElementById('botonSmall01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeLarge1){
+            btn = document.getElementById('botonLarge01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeYat1){
+            btn = document.getElementById('botonYat01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeChance1){
+            btn = document.getElementById('botonChance01');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+    }
+    else{
+
+
+        elements = document.querySelectorAll('.btnPlayer1'); //Guarda todos los botones del jugador 1
+  
+        elements.forEach(function(element) {
+          element.classList.add('btn-disabled'); //Y los apaga
+          elements.disabled=true;
+        });
+
+        if(!puntajeOnes2){
+            btn = document.getElementById('botonOnes02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeTwos2){
+            btn = document.getElementById('botonTwos02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeThrees2){
+            btn = document.getElementById('botonThrees02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFours2){
+            btn = document.getElementById('botonFours02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFives2){
+            btn = document.getElementById('botonFives02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeSixes2){
+            btn = document.getElementById('botonSixes02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeTOK2){
+            btn = document.getElementById('botonTOK02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFK2){
+            btn = document.getElementById('botonFK02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeFull2){
+            btn = document.getElementById('botonFull02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeSmall2){
+            btn = document.getElementById('botonSmall02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeLarge2){
+            btn = document.getElementById('botonLarge02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeYat2){
+            btn = document.getElementById('botonYat02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+        if(!puntajeChance2){
+            btn = document.getElementById('botonChance02');
+            btn.classList.remove('btn-disabled');     
+            btn.disabled = false;   
+        }
+    }
+
+}
+
 
 
 function desactivarBoton(boton, n){
     boton.disabled=true;
-    boton.setAttribute('style', 'background-color: gray; color: white;');
 
     switch (n){
         case 1:
@@ -610,8 +920,43 @@ function desactivarBoton(boton, n){
     obtenerTotal();
 
     contadorlanzamiento=0;
-    contadorturnos+=1;
+    
+    contadorturnos++;
+    changeButtonsByTurns();
+    selectionDone();
+    if(contadorturnos % 2 == 0){
+        document.getElementById("jugador").innerHTML = "Jugador 2";
+        
+    }else{
+        document.getElementById("jugador").innerHTML = "Jugador 1";
+        turno=(contadorturnos/2)+0.5;
+        document.getElementById("turno").innerHTML = turno;
+    }
 
+    if(contadorturnos == 27){
+        document.getElementById("botonDados").style.display = "none";
+        document.getElementById("btnWinner").style.display = "block";
+    }
+
+}
+
+function showWinner(){
+    fetch('../php/processes/addvictory.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'variable1=' + encodeURIComponent(player1Won) + '&variable2=' + encodeURIComponent(player2Won)
+      })
+      .then(response => response.text())
+      .then(data => {
+        // Handle the response from the PHP file
+        console.log(data);
+      })
+      .catch(error => {
+        // Handle any errors that occurred during the request
+        console.error('Error:', error);
+      });
 }
 
 
@@ -737,5 +1082,70 @@ function obtenerTotal(){
     //Imprimir total 2
     var tot2 = document.getElementById("total2");
     tot2.textContent = total2;
+
+}
+
+window.onload = function() {
+
+    elements = document.querySelectorAll('.btnPlayer1');
+  
+    elements.forEach(function(element) {
+        element.classList.add('btn-disabled');
+        elements.disabled=true;
+    });
+
+    elements = document.querySelectorAll('.btnPlayer2');
+  
+    elements.forEach(function(element) {
+        element.classList.add('btn-disabled');
+        elements.disabled=true;
+    });
+};
+
+//----------------------------------------------------
+
+function login_error(error_msg) {
+    var paragraph = document.getElementById("login_error");
+    paragraph.innerHTML = error_msg;
+}
+
+function login_success(username){
+    var paragraph = document.getElementById("jug2");
+    paragraph.innerHTML = "El jugador 2 es: " + username;
+    
+}
+
+function getResultsReady(){
+    document.getElementById("botonDados").style.display = "none";
+    document.getElementById("btnWinner").style.display = "block";
+}
+
+function showWinner(player){
+
+    swal.fire({
+        title: "Ganador!",
+        text: "El ganador es " + player,
+        icon: "success",
+        button: "OK",
+    }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'dashboard.php'; // Replace 'index.html' with your desired URL
+        }
+    });
+
+}
+
+function showTie(){
+
+    swal.fire({
+        title: "Empate!",
+        text: "La partida ha sido un empate!",
+        icon: "warning",
+        button: "OK",
+    }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'dashboard.php'; // Replace 'index.html' with your desired URL
+        }
+    });
 
 }

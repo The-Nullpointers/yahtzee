@@ -9,7 +9,7 @@
 
     $user_conn = $conn->query($query);
 
-    if($user_conn->num_rows>=1){
+    if ($user_conn->num_rows>=1){
 
         $row = $user_conn->fetch_array(MYSQLI_ASSOC);
 
@@ -22,7 +22,7 @@
         header("Location: dashboard.php");
         
 
-    }else{
+    } else {
         echo "<script>login_error();</script>";
     }
 

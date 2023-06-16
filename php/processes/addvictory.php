@@ -2,6 +2,8 @@
 
 <?php
 
+    session_start();
+    require_once "connect.php";
     $username = $_SESSION['username'];
     $username_guest = "";
     if(isset($_SESSION['username_invitado'])){
@@ -12,25 +14,22 @@
 
     $user_conn = $conn->query($query);
 
+    $total1 = $_POST['variable1'];
+    $total2 = $_POST['variable2'];
 
-    if(isset($_POST['player1Won']) && isset($_POST['player2Won'])){
-        $total1 = $_POST['player1Won'];
-        $total2 = $_POST['player2Won'];
-    }
+    echo "Total 1 : $total1";
+    echo "Total 2 : $total2";
 
 
-    if($user_conn->num_rows>=1){
+    if ($user_conn->num_rows>=1) {
 
-        if($total1){
-            echo $total1;
-            echo $total2;
-            echo "test";
+        if ($total1 == 'true') {
 
             $query = "UPDATE usuarios SET victorias = victorias + 1 WHERE USUARIO = '$username'";
 
-            if($conn->query($query) === true){
+            if ($conn->query($query) === true) {
                 $_SESSION['wins']++;
-                if($username_guest != ""){
+                if ($username_guest != "") {
 
                     $query = "UPDATE usuarios SET derrotas = derrotas + 1 WHERE USUARIO = '$username_guest'";
                     if ($conn->query($query) === true) {
@@ -50,13 +49,13 @@
             }
 
 
-        } else if ($total2){
+        } elseif ($total2 == 'true') {
 
             $query = "UPDATE usuarios SET derrotas = derrotas + 1 WHERE USUARIO = '$username'";
             $_SESSION['loses']++;
-            if($conn->query($query) === true){
+            if ($conn->query($query) === true) {
 
-                if($username_guest != ""){
+                if ($username_guest != "") {
 
                     $query = "UPDATE usuarios SET derrotas = derrotas + 1 WHERE USUARIO = '$username_guest'";
                     if ($conn->query($query) === true) {
@@ -67,7 +66,7 @@
                     }
     
                 } else {
-                    $x = "invitado"
+                    $x = "invitado";
                     echo "<script>showWinner('". $x ."');</script>";
                 }
             }

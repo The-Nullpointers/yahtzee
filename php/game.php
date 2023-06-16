@@ -59,7 +59,7 @@
         <br>
         <br>
         <button class="button" id="botonDados" onclick="throwDice(this)">Lanzar los Dados</button>
-        <button class="button-winner" id="btnWinner" value="winner" name="winname" onclick="showWinner()" style="display: none;">Ver Ganador</button>
+        <button class="button-winner" id="btnWinner" value="winner" name="winname" onclick="showWinnerGame()" style="display: none;">Ver Ganador</button>
 
       </center>
     </div>

@@ -940,7 +940,9 @@ function desactivarBoton(boton, n){
 
 }
 
-function showWinner(){
+function showWinnerGame(){
+    console.log(player1Won);
+    console.log(player2Won);
     fetch('../php/processes/addvictory.php', {
         method: 'POST',
         headers: {
@@ -957,6 +959,20 @@ function showWinner(){
         // Handle any errors that occurred during the request
         console.error('Error:', error);
       });
+
+    winner = "";
+    if(player1Won){
+        winner = "Jugador 1";
+        showWinner(winner);
+    }
+    else if (player2Won) {
+        winner = "Jugador 2";
+        showWinner(winner);
+    } else {
+        showTie();
+    }
+
+
 }
 
 
@@ -1122,6 +1138,7 @@ function getResultsReady(){
 
 function showWinner(player){
 
+    console.log("CHECK");
     swal.fire({
         title: "Ganador!",
         text: "El ganador es " + player,
